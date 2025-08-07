@@ -183,24 +183,39 @@ function App() {
                   </>
                 ) : (
                   <>
-                    <input
-                      type="number"
-                      placeholder="Previous"
-                      {...form.register(`grades.${index}.previous`)}
-                      className="w-20 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                    />
-                    <input
-                      type="number"
-                      placeholder="New"
-                      {...form.register(`grades.${index}.new`)}
-                      className="w-20 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                    />
-                    <input
-                      type="number"
-                      placeholder="Points"
-                      {...form.register(`grades.${index}.points`)}
-                      className="w-20 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                    />
+                    <div className="flex flex-col align-middle">
+                      <div className="mb-1">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Previous</label>
+                      </div>
+                      <input
+                        type="number"
+                        placeholder="Previous"
+                        {...form.register(`grades.${index}.previous`)}
+                        className="w-20 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                      />
+                    </div>
+                    <div className="flex flex-col align-middle">
+                      <div className="mb-1">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">New</label>
+                      </div>
+                      <input
+                        type="number"
+                        placeholder="New"
+                        {...form.register(`grades.${index}.new`)}
+                        className="w-20 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                      />
+                    </div>
+                    <div className='flex flex-col align-middle'>
+                      <div className="mb-1">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Points</label>
+                      </div>
+                      <input
+                        type="number"
+                        placeholder="Points"
+                        {...form.register(`grades.${index}.points`)}
+                        className="w-20 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                      />
+                    </div>
                   </>
                 )}
                 <button
