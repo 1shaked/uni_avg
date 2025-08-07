@@ -129,86 +129,90 @@ function App() {
 
           <br />
           {/* create a form to insert the grades  */}
-          {grades.fields.map((field, index) => (
-            <div
-              key={field.id}
-              className="flex items-center gap-3 border border-gray-300 dark:border-gray-600 rounded-lg p-3 mb-3 bg-white dark:bg-gray-900 shadow-sm"
-            >
-              <div className='flex flex-col align-middle'>
-                <div className='mb-1'>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Label</label>
+          {grades.fields.map((field, index) => {
+            // Watch the status field to force rerender on status change
+            const watchedStatus = form.watch(`grades.${index}.status`);
+            return (
+              <div
+                key={field.id + '-' + watchedStatus}
+                className="flex items-center gap-3 border border-gray-300 dark:border-gray-600 rounded-lg p-3 mb-3 bg-white dark:bg-gray-900 shadow-sm"
+              >
+                <div className='flex flex-col align-middle'>
+                  <div className='mb-1'>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Label</label>
+                  </div>
+                  <input type="text" {...form.register(`grades.${index}.label`)} className="border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100" placeholder="Label" />
                 </div>
-                <input type="text" {...form.register(`grades.${index}.label`)} className="border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100" placeholder="Label" />
-              </div>
-              <div className='flex flex-col align-middle'>
-                <div className='mb-1'>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Status</label>
+                <div className='flex flex-col align-middle'>
+                  <div className='mb-1'>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Status</label>
+                  </div>
+                  <select
+                    {...form.register(`grades.${index}.status`)}
+                    className="border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                  >
+                    <option value="ADD">Add</option>
+                    <option value="REMOVE">Remove</option>
+                    <option value="UPDATE">Update</option>
+                  </select>
                 </div>
-                <select
-                  {...form.register(`grades.${index}.status`)}
-                  className="border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                >
-                  <option value="ADD">Add</option>
-                  <option value="REMOVE">Remove</option>
-                  <option value="UPDATE">Update</option>
-                </select>
-              </div>
-              {field.status === 'ADD' || field.status === 'REMOVE' ? (
-                <>
-                  <div className="flex flex-col align-middle">
-                    <div className="mb-1">
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Grade</label>
+                {(watchedStatus === 'ADD' || watchedStatus === 'REMOVE') ? (
+                  <>
+                    <div className="flex flex-col align-middle">
+                      <div className="mb-1">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Grade</label>
+                      </div>
+                      <input
+                        type="number"
+                        placeholder="Grade"
+                        {...form.register(`grades.${index}.grade`)}
+                        className="w-20 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                      />
                     </div>
+                    <div>
+                      <div className="mb-1">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Points</label>
+                      </div>
+                        <input
+                        type="text"
+                        placeholder="Points"
+                        {...form.register(`grades.${index}.points`)}
+                        className="w-20 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <>
                     <input
                       type="number"
-                      placeholder="Grade"
-                      {...form.register(`grades.${index}.grade`)}
+                      placeholder="Previous"
+                      {...form.register(`grades.${index}.previous`)}
                       className="w-20 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                     />
-                  </div>
-                  <div>
-                    <div className="mb-1">
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Points</label>
-                    </div>
-                      <input
-                      type="text"
+                    <input
+                      type="number"
+                      placeholder="New"
+                      {...form.register(`grades.${index}.new`)}
+                      className="w-20 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                    />
+                    <input
+                      type="number"
                       placeholder="Points"
                       {...form.register(`grades.${index}.points`)}
                       className="w-20 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                     />
-                  </div>
-                </>
-              ) : (
-                <>
-                  <input
-                    type="number"
-                    placeholder="Previous"
-                    {...form.register(`grades.${index}.previous`)}
-                    className="w-20 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                  />
-                  <input
-                    type="number"
-                    placeholder="New"
-                    {...form.register(`grades.${index}.new`)}
-                    className="w-20 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                  />
-                  <input
-                    type="number"
-                    placeholder="Points"
-                    {...form.register(`grades.${index}.points`)}
-                    className="w-20 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                  />
-                </>
-              )}
-              <button
-                type="button"
-                onClick={() => grades.remove(index)}
-                className="ml-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
-              >
-                Remove
-              </button>
-            </div>
-          ))}
+                  </>
+                )}
+                <button
+                  type="button"
+                  onClick={() => grades.remove(index)}
+                  className="ml-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+                >
+                  Remove
+                </button>
+              </div>
+            );
+          })}
 
           <div>
             {/* add grade button */}
