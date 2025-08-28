@@ -3,7 +3,6 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import './App.css'
 import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
-import Markdown from 'react-markdown';
 
 
 export type STATUS_ACTIONS = 'ADD' | 'REMOVE' | 'UPDATE';
