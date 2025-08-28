@@ -235,7 +235,7 @@ import { useEffect } from "react";
 // grabs every .md file in src/content at build time as raw text
 
 export function CourseReview() {
-  const [docs, setDocs] = useState([]);
+  const [docs, setDocs] = useState<{ name: string; text: string }[]>([]);
 
   useEffect(() => {
     async function loadAll() {
