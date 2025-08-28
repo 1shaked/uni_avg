@@ -91,6 +91,11 @@ function App() {
         <h1>Calculate the avg grade {avg.toFixed(2)}</h1>
       </div>
       <div>
+        <h1>
+          <a href="https://www.youtube.com/@pilearn1266" className='text-red-500' target="_blank" rel="noopener noreferrer">My youtube channel (Click)</a>
+        </h1>
+      </div>
+      <div>
         <p className="text-lg font-medium">Total Points: {points}</p>
         <p className="text-lg font-medium">Average: {avg_grade}</p>
       </div>
