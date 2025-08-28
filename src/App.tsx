@@ -2,6 +2,8 @@ import { useForm, useFieldArray } from 'react-hook-form';
 
 import './App.css'
 import { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import Markdown from 'react-markdown';
 
 
 export type STATUS_ACTIONS = 'ADD' | 'REMOVE' | 'UPDATE';
@@ -84,7 +86,6 @@ function App() {
 
   const avg_grade = form.watch('avg_grade');
   const points = form.watch('points');
-
   return (
     <>
       <div>
@@ -129,105 +130,86 @@ function App() {
 
           <br />
           {/* create a form to insert the grades  */}
-          {grades.fields.map((field, index) => {
-            // Watch the status field to force rerender on status change
-            const watchedStatus = form.watch(`grades.${index}.status`);
-            return (
-              <div
-                key={field.id + '-' + watchedStatus}
-                className="flex items-center gap-3 border border-gray-300 dark:border-gray-600 rounded-lg p-3 mb-3 bg-white dark:bg-gray-900 shadow-sm"
-              >
-                <div className='flex flex-col align-middle'>
-                  <div className='mb-1'>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Label</label>
-                  </div>
-                  <input type="text" {...form.register(`grades.${index}.label`)} className="border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100" placeholder="Label" />
+          {grades.fields.map((field, index) => (
+            <div
+              key={field.id}
+              className="flex items-center gap-3 border border-gray-300 dark:border-gray-600 rounded-lg p-3 mb-3 bg-white dark:bg-gray-900 shadow-sm"
+            >
+              <div className='flex flex-col align-middle'>
+                <div className='mb-1'>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Label</label>
                 </div>
-                <div className='flex flex-col align-middle'>
-                  <div className='mb-1'>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Status</label>
-                  </div>
-                  <select
-                    {...form.register(`grades.${index}.status`)}
-                    className="border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                  >
-                    <option value="ADD">Add</option>
-                    <option value="REMOVE">Remove</option>
-                    <option value="UPDATE">Update</option>
-                  </select>
-                </div>
-                {(watchedStatus === 'ADD' || watchedStatus === 'REMOVE') ? (
-                  <>
-                    <div className="flex flex-col align-middle">
-                      <div className="mb-1">
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Grade</label>
-                      </div>
-                      <input
-                        type="number"
-                        placeholder="Grade"
-                        {...form.register(`grades.${index}.grade`)}
-                        className="w-20 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                      />
-                    </div>
-                    <div>
-                      <div className="mb-1">
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Points</label>
-                      </div>
-                        <input
-                        type="text"
-                        placeholder="Points"
-                        {...form.register(`grades.${index}.points`)}
-                        className="w-20 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                      />
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="flex flex-col align-middle">
-                      <div className="mb-1">
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Previous</label>
-                      </div>
-                      <input
-                        type="number"
-                        placeholder="Previous"
-                        {...form.register(`grades.${index}.previous`)}
-                        className="w-20 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                      />
-                    </div>
-                    <div className="flex flex-col align-middle">
-                      <div className="mb-1">
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">New</label>
-                      </div>
-                      <input
-                        type="number"
-                        placeholder="New"
-                        {...form.register(`grades.${index}.new`)}
-                        className="w-20 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                      />
-                    </div>
-                    <div className='flex flex-col align-middle'>
-                      <div className="mb-1">
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Points</label>
-                      </div>
-                      <input
-                        type="number"
-                        placeholder="Points"
-                        {...form.register(`grades.${index}.points`)}
-                        className="w-20 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                      />
-                    </div>
-                  </>
-                )}
-                <button
-                  type="button"
-                  onClick={() => grades.remove(index)}
-                  className="ml-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
-                >
-                  Remove
-                </button>
+                <input type="text" {...form.register(`grades.${index}.label`)} className="border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100" placeholder="Label" />
               </div>
-            );
-          })}
+              <div className='flex flex-col align-middle'>
+                <div className='mb-1'>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Status</label>
+                </div>
+                <select
+                  {...form.register(`grades.${index}.status`)}
+                  className="border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                >
+                  <option value="ADD">Add</option>
+                  <option value="REMOVE">Remove</option>
+                  <option value="UPDATE">Update</option>
+                </select>
+              </div>
+              {field.status === 'ADD' || field.status === 'REMOVE' ? (
+                <>
+                  <div className="flex flex-col align-middle">
+                    <div className="mb-1">
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Grade</label>
+                    </div>
+                    <input
+                      type="number"
+                      placeholder="Grade"
+                      {...form.register(`grades.${index}.grade`)}
+                      className="w-20 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                    />
+                  </div>
+                  <div>
+                    <div className="mb-1">
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Points</label>
+                    </div>
+                      <input
+                      type="text"
+                      placeholder="Points"
+                      {...form.register(`grades.${index}.points`)}
+                      className="w-20 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <input
+                    type="number"
+                    placeholder="Previous"
+                    {...form.register(`grades.${index}.previous`)}
+                    className="w-20 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                  />
+                  <input
+                    type="number"
+                    placeholder="New"
+                    {...form.register(`grades.${index}.new`)}
+                    className="w-20 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                  />
+                  <input
+                    type="number"
+                    placeholder="Points"
+                    {...form.register(`grades.${index}.points`)}
+                    className="w-20 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                  />
+                </>
+              )}
+              <button
+                type="button"
+                onClick={() => grades.remove(index)}
+                className="ml-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+              >
+                Remove
+              </button>
+            </div>
+          ))}
 
           <div>
             {/* add grade button */}
@@ -239,11 +221,58 @@ function App() {
           <br />
 
         <button type="submit">Submit grades</button>
-      </form>
 
-      
+      </form>
+        <CourseReview />
     </>
   )
 }
+
+
+
+import { useEffect } from "react";
+
+// grabs every .md file in src/content at build time as raw text
+
+export function CourseReview() {
+  const [docs, setDocs] = useState([]);
+
+  useEffect(() => {
+    async function loadAll() {
+      const results = [];
+      for (const name of MD_Files) {
+        const res = await fetch(`/${name}`);  // files in public/ served from root
+        const text = await res.text();
+        results.push({ name, text });
+      }
+      setDocs(results);
+    }
+    loadAll();
+  }, []);
+
+  return (
+    <div className="p-6 space-y-10">
+      {docs.map(doc => (
+        <section key={doc?.name} className="border-b pb-6">
+          <h2 className="text-xl font-semibold mb-2">{doc.name}</h2>
+          <article className="prose max-w-none">
+            <ReactMarkdown>{doc.text}</ReactMarkdown>
+          </article>
+        </section>
+      ))}
+    </div>
+  );
+}
+
+
+export const MD_Files = [
+  "algo2.md",
+  "bi.md",
+  "data_r.md",
+  "ecom_elcronics.md",
+  "nlp.md",
+  "process_mining.md",
+  "robotics.md"
+];
 
 export default App
